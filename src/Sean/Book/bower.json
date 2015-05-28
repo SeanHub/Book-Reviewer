@@ -1,0 +1,6 @@
+{
+    "dependencies": {
+        "foundation-icon-fonts": "latest"
+    },
+    "name": "BookBundle"
+}

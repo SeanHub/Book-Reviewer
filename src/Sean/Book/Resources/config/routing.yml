@@ -1,0 +1,32 @@
+main:
+    path:   /
+    defaults:   { _controller: BookBundle:Book:index }
+    
+book_add:
+    path:   /book/add
+    defaults:   { _controller: BookBundle:Book:add }
+    
+book_view:
+    path:   /book/view/{id}
+    defaults:   { _controller: BookBundle:Book:view }
+    
+book_view_external:
+    path:   /book/viewexternal/{id}
+    defaults:   { _controller: BookBundle:Book:viewExternal }
+    
+    
+review_add:
+    path:   /review/add/{id}
+    defaults:   { _controller: BookBundle:Review:add }
+    
+review_edit:
+    path:   /review/edit/{id}
+    defaults:   { _controller: BookBundle:Review:edit }
+    
+review_delete:
+    path:   /review/delete/{id}
+    defaults:   { _controller: BookBundle:Review:delete }
+    
+oauth_client:
+    path:   /oauth/client
+    defaults:   { _controller: BookBundle:OAuth:client }

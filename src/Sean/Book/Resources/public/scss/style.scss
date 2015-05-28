@@ -1,0 +1,94 @@
+body {
+    overflow: hidden;
+}
+
+.sm-nav {
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    overflow-y: auto;
+}
+
+.sm-main {
+    left: 100px;
+    padding: 20px;
+    right:0;
+    bottom:0;
+    top: 0;
+    position: absolute;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.sm-article {
+    margin: 30px auto;
+    overflow: auto;
+}
+
+.sm-article-content {
+    margin: 20px auto;
+}
+
+#book_synopsis {
+    height: 100px;
+}
+
+#review_review {
+    height: 200px;
+}
+
+.rating {
+    border: none;
+    width: 120px;
+    margin: 0px 0px 30px 0px;
+    padding: 0;
+}
+
+.rating.review {
+    
+}
+
+.rating:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+    clip:rect(0,0,0,0);
+}
+
+.rating:not(:checked) > label {
+    float:right;
+    width:1em;
+    padding:0px;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:default;
+    font-size:150%;
+    line-height:1.0;
+    color:#dddddd;
+    margin: 0px;
+}
+
+.rating.editable:not(:checked) > label {
+    cursor:pointer;
+}
+
+.rating:not(:checked) > label:before {
+    content: '★';
+}
+
+.rating > input:checked ~ label {
+    color: #ff7700;
+}
+
+.rating.editable:not(:checked) > label:hover,
+.rating.editable:not(:checked) > label:hover ~ label {
+    color: gold;
+}
+
+.rating.editable > input:checked + label:hover,
+.rating.editable > input:checked + label:hover ~ label,
+.rating.editable > input:checked ~ label:hover,
+.rating.editable > input:checked ~ label:hover ~ label,
+.rating.editable > label:hover ~ input:checked ~ label {
+    color: #eeaa00;
+}

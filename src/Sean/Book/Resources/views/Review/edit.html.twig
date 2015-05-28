@@ -1,0 +1,42 @@
+{% extends '::header_footer.html.twig'%}
+{% form_theme form 'BookBundle:Book:generic_formtheme.html.twig' %}
+{% set pageTitle = 'Edit Review' %}
+{% block content %}
+<div class="row">
+    <div class="large-6 columns">
+        <h3>Edit Review for {{ book.title }}</h3>
+    </div>
+</div>
+<br/>
+{{ form_start(form) }}
+{{ form_row(form.review, { 'label': 'Review' }) }}
+<br/>
+<div class="row">
+    <div class="large-6 columns">
+        <fieldset class="rating editable">
+            <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5">5 Stars</label>
+            <input type="radio" id="star4" name="rating" value="4"/><label for="star4" title="4">4 Stars</label>
+            <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3">3 Stars</label>
+            <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2">2 Stars</label>
+            <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1">1 Star</label>
+        </fieldset>
+    </div>
+</div>
+<div class="row">
+    <div class="large-6 columns">
+        {{form(form)}}
+    </div>
+</div>  
+{{ form_end(form) }}
+<script>
+    var rating = document.getElementById('review_rating').value;
+    document.getElementById('star' + rating).setAttribute('checked', 'checked');
+
+    var inputs = document.getElementsByClassName('rating')[0].getElementsByTagName('input');
+    for(var i = 0; i < inputs.length; i++) {
+        inputs.item(i).addEventListener('click', function () {
+            document.getElementById('review_rating').value = this.value;
+        }, false);
+    };
+</script>
+{% endblock %}

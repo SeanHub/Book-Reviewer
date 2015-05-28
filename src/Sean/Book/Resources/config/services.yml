@@ -1,0 +1,8 @@
+services:
+    book_service:
+        class: Sean\Book\Service\BookService
+        arguments: ["@doctrine.orm.entity_manager"]
+        
+    review_service:
+        class: Sean\Book\Service\ReviewService
+        arguments: ["@doctrine.orm.entity_manager"]

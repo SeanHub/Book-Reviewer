@@ -1,0 +1,24 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+{% set pageTitle = 'Register' %}
+{% form_theme form 'FOSUserBundle:Registration:registration_form.html.twig' %}
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block fos_user_content %}
+<div class="row">
+    <div class="large-6 columns">
+    <h3>Register</h3>
+    </div>
+</div>
+<br/>
+<form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
+    {{ form_widget(form._token) }}
+    {{ form_row(form.email, { 'label': 'Email' }) }}
+    {{ form_row(form.username, { 'label': 'Username' }) }}
+    {{ form_row(form.plainPassword, { 'label': 'Password' }) }}
+    <div class="row">
+        <div class="large-6 columns">
+            <input class="button block" type="submit" value="{{ 'Register'|trans }}" />
+        </div>
+    </div>
+</form>
+{% endblock fos_user_content %}

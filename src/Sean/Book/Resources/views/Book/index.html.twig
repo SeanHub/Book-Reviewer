@@ -1,0 +1,106 @@
+{% extends '::header_footer.html.twig'%}
+{% set pageTitle = 'Home' %}
+{% form_theme form 'BookBundle:Book:search_formtheme.html.twig' %}
+{% block content %}
+<div class="row">
+    <div class="large-6 columns">
+        {{ form_start(form) }}
+        {{ form_row(form.title) }}
+        {{ form_widget(form._token) }}
+        {{ form_end(form, {'render_rest': false}) }}
+    </div>
+</div>
+{% if bestSellers %}
+<div class="row">
+    <div class="large-6 columns">
+        <div class="panel slick_slider">
+            {% for key, book in bestSellers %}
+            <div>
+                <h6><a href="{{ book.amazon_product_url }}" target="_blank">{{ book.book_details[0].title }}</a></h6>
+                <h6 class="subheader">{{ book.book_details[0].author }}</h6>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% if searched and books %}
+<div class="row">
+    <div class="large-6 columns">
+        <h2>Results</h2>
+    </div>
+</div>
+{% endif %}
+{% for book in books %}
+    <article class="sm-article">
+        <div class="row">
+            <div class="large-6 columns">
+                <h3><a href="/book/view/{{ book.id }}">{{ book.title }}</a></h3>
+                <h6>Written by <a href="#">{{ book.author }}</a></h6>
+                {% if book.isbn %}<h6>ISBN: {{ book.isbn }}</h6>{% endif %}
+                <h6>Added on {{ book.dateAdded|date('l jS F Y') }}</h6>
+            </div>
+        </div>
+        <div class="row">
+            <div class="large-6 columns sm-article-content">
+                <blockquote>{{ book.synopsis }}</blockquote>
+            </div>
+        </div>
+    </article>
+{% endfor %}
+{% if searched and externalSearchResults %}
+    <div class="row">
+        <div class="large-6 columns">
+            <h2>Results from Google Books</h2>
+        </div>
+    </div>
+    {% for book in externalSearchResults %}
+        <article class="sm-article">
+            <div class="row">
+                <div class="large-6 columns">
+                    {% if book.volumeInfo.title is defined %}
+                    <h3><a href="book/viewexternal/{{ book.id }}">{{ book.volumeInfo.title }}</a></h3>
+                    {% endif %}
+                    {% if book.volumeInfo.authors[0] is defined %}
+                    <h6>Written by <a href="#">{{ book.volumeInfo.authors[0] }}</a></h6>
+                    {% endif %}
+                    {% if book.volumeInfo.industryIdentifiers is defined %}
+                        {% if book.volumeInfo.industryIdentifiers[0].type == 'ISBN_13' %}
+                        <h6>ISBN: {{ book.volumeInfo.industryIdentifiers[0].identifier }}</h6>
+                        {% endif %}
+                    {% endif %}
+                    {% if book.volumeInfo.publishedDate is defined %}
+                    <h6>Published on {{ book.volumeInfo.publishedDate|trim('*')|date('l jS F Y') }}</h6>
+                    {% endif %}
+                </div>
+            </div>
+            {% if book.volumeInfo.description is defined %}
+            <div class="row">
+                <div class="large-6 columns sm-article-content">
+                    <blockquote>{{ book.volumeInfo.description }}</blockquote>
+                </div>
+            </div>
+            {% endif %}
+            {% if book.volumeInfo.industryIdentifiers is defined %}
+                {% if book.volumeInfo.industryIdentifiers[0].type == 'ISBN_13' %}
+                    <div class="row">
+                        <div class="large-6 columns">
+                            <a class="button" href="/book/add?isbn={{ book.volumeInfo.industryIdentifiers[0].identifier }}">Add Book</a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </article>
+    {% endfor %}
+{% endif %}
+<script>
+    $(document).ready(function(){
+        $('.slick_slider').slick({
+            arrows: false,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            pauseOnHover: false
+        });
+    });
+</script>
+{% endblock %}

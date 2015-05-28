@@ -1,0 +1,5 @@
+api:
+    resource: Sean\ExternalApiBundle\Controller\ExternalApiController
+    name_prefix: api_
+    prefix: /
+    type: rest

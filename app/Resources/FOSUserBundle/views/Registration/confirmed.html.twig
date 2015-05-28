@@ -1,0 +1,22 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block fos_user_content %}
+<div class="row">
+    <div class="large-6 columns">
+        <h3>{{ 'Registration Confirmed'|trans({'%username%': user.username}) }}</h3>
+    </div>
+</div>
+{% if app.session is not empty %}
+{% set targetUrl = app.session.get('_security.' ~ app.security.token.providerKey ~ '.target_path') %}
+{% if targetUrl is not empty %}<p><a href="{{ targetUrl }}">{{ 'Registration Back'|trans }}</a></p>{% endif %}
+{% endif %}
+<script type="text/javascript">
+    window.onload = function () {
+        setTimeout(function () {
+            window.location.replace("/");
+        }, 2000);
+    };
+</script>
+{% endblock fos_user_content %}

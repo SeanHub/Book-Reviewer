@@ -1,0 +1,55 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+{% set pageTitle = 'Log In' %}
+{% block fos_user_content %}
+<div class="row">
+    <div class="large-6 columns">
+        <h3>Log In</h3>
+    </div>
+</div>
+<br>
+{% if error %}
+<div class="row">
+    <div class="large-6 columns">
+        <small class="error">{{ error.messageKey|trans(error.messageData, 'security') }}</small>
+    </div>
+</div>
+{% endif %}
+<form action="{{ path("fos_user_security_check") }}" method="post">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+    <div class="row">
+        <div class="large-6 columns">
+            <div class="row collapse">
+                <div class="small-3 columns">
+                    <span class="prefix">{{ 'Username'|trans }}</span>
+                </div>
+                <div class="small-9 columns">
+                    <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-6 columns">
+            <div class="row collapse">
+                <div class="small-3 columns">
+                    <span class="prefix">{{ 'Password'|trans }}</span>
+                </div>
+                <div class="small-9 columns">
+                    <input type="password" id="password" name="_password" required="required" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-6 columns">
+            <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+            <label for="remember_me">{{ 'Remember Me'|trans }}</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-6 columns">
+            <input class="button block" type="submit" id="_submit" name="_submit" value="{{ 'Log In'|trans }}" />
+        </div>
+    </div>
+</form>
+{% endblock fos_user_content %}

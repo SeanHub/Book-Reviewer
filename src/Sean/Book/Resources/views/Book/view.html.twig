@@ -1,0 +1,83 @@
+{% extends '::header_footer.html.twig'%}
+{% set pageTitle = book.title %}
+{% set averageRatingRounded = averageRating|round(0, 'floor') %}
+{% block content %}
+<div class="row">
+    <div class="large-6 columns">
+        <h3>{{ book.title }}</h3>
+        <fieldset class="rating">
+            <input type="radio" id="star5_{{book.id}}" name="rating_{{book.id}}" value="5" disabled {% if averageRatingRounded == 5 %} checked {% endif %}/><label for="star5_{{book.id}}" title="{{ averageRating }}">5 Stars</label>
+            <input type="radio" id="star4_{{book.id}}" name="rating_{{book.id}}" value="4" disabled {% if averageRatingRounded == 4 %} checked {% endif %}/><label for="star4_{{book.id}}" title="{{ averageRating }}">4 Stars</label>
+            <input type="radio" id="star3_{{book.id}}" name="rating_{{book.id}}" value="3" disabled {% if averageRatingRounded == 3 %} checked {% endif %}/><label for="star3_{{book.id}}" title="{{ averageRating }}">3 Stars</label>
+            <input type="radio" id="star2_{{book.id}}" name="rating_{{book.id}}" value="2" disabled {% if averageRatingRounded == 2 %} checked {% endif %}/><label for="star2_{{book.id}}" title="{{ averageRating }}">2 Stars</label>
+            <input type="radio" id="star1_{{book.id}}" name="rating_{{book.id}}" value="1" disabled {% if averageRatingRounded == 1 %} checked {% endif %}/><label for="star1_{{book.id}}" title="{{ averageRating }}">1 Star</label>
+        </fieldset>
+        <h6>Written by <a href="#">{{ book.author }}</a></h6>
+        {% if book.isbn %}<h6>ISBN: {{ book.isbn }}</h6>{% endif %}
+        <h6 class="subheader">Added on {{ book.dateAdded|date('l jS F Y') }}</h6>
+    </div>
+    <div class="large-6 columns left">
+        <img id="book_image" src=""/>
+        <h6 id="book_publisher"></h6>
+        <h6 class="subheader" id="book_publisheddate"></h6>
+    </div>
+</div>
+<div class="row">
+    <div class="large-6 columns sm-article-content">
+        <p>{{ book.synopsis }}</p>
+    </div>
+</div>
+<div class="row">
+    <div class="large-6 columns">
+        {% if not hasReviewed %}
+            <a class="button block" href="/review/add/{{ book.id }}"><i class="fi-plus"></i>&nbsp;&nbsp;Add Review</a>
+        {% else %}
+            <a class="button block" href="/review/edit/{{ book.id }}"><i class="fi-pencil"></i>&nbsp;&nbsp;Edit Review</a>
+            <a class="button block alert right" href="/review/delete/{{ book.id }}"><i class="fi-trash"></i>&nbsp;&nbsp;Delete Review</a>
+        {% endif %}
+    </div>
+</div>
+{% if reviews|length > 0 %}
+<div class="row">
+    <div class="large-6 columns">
+        <hr/>
+        <h4>Reviews</h4>
+        <br/>
+    </div>
+</div>
+{% for review in reviews %}
+<div class="row">
+    <div class="large-6 columns">
+        <div class="panel {% if app.user.username is defined %} {% if review.reviewer.username == app.user.username %} callout {% endif %} {% endif %}">
+            <fieldset class="rating review">
+                <input type="radio" id="star5_{{review.id}}" name="rating_{{review.id}}" value="5" disabled {% if review.rating == 5 %} checked {% endif %}/><label for="star5_{{review.id}}">5 Stars</label>
+                <input type="radio" id="star4_{{review.id}}" name="rating_{{review.id}}" value="4" disabled {% if review.rating == 4 %} checked {% endif %}/><label for="star4_{{review.id}}">4 Stars</label>
+                <input type="radio" id="star3_{{review.id}}" name="rating_{{review.id}}" value="3" disabled {% if review.rating == 3 %} checked {% endif %}/><label for="star3_{{review.id}}">3 Stars</label>
+                <input type="radio" id="star2_{{review.id}}" name="rating_{{review.id}}" value="2" disabled {% if review.rating == 2 %} checked {% endif %}/><label for="star2_{{review.id}}">2 Stars</label>
+                <input type="radio" id="star1_{{review.id}}" name="rating_{{review.id}}" value="1" disabled {% if review.rating == 1 %} checked {% endif %}/><label for="star1_{{review.id}}">1 Star</label>
+            </fieldset>
+            <p>{{ review.review }}</p>
+            <br/>
+            <h4><small class="left">{{ review.reviewer.username }}</small><small class="right">{{ review.dateAdded|date('l jS F Y') }}</small></h4>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+{% if book.isbn %}
+<script>
+    window.onload = function () {
+        jQuery.ajax('https://www.googleapis.com/books/v1/volumes?q=isbn:' + {{ book.isbn }}).done(function (data) {
+            if (data.totalItems !== 0) {
+                var book = data.items[0].volumeInfo;
+                if (book.imageLinks) {
+                    document.getElementById('book_image').setAttribute('src', book.imageLinks.thumbnail);
+                };
+                document.getElementById('book_publisher').innerText = 'Publisher: ' + book.publisher;
+                document.getElementById('book_publisheddate').innerText = 'Published: ' + book.publishedDate;
+            };
+        });
+    };
+</script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+{% set pageTitle = 'User Details' %}
+{% form_theme form 'BookBundle:Book:generic_formtheme.html.twig' %}
+{% block fos_user_content %}
+{% trans_default_domain 'FOSUserBundle' %}
+<div class="row">
+    <div class="large-6 columns">
+        <h3>User Details</h3>
+    </div>
+</div>
+<br/>
+{{ form_start(form) }}
+{{ form_row(form.username, { 'label': 'Username' }) }}
+{{ form_row(form.email, { 'label': 'Email' }) }}
+{{ form_row(form.current_password, { 'label': 'Current Password' }) }}
+<div class="row">
+    <div class="large-6 columns">
+        <input class="button block" type="submit" value="{{ 'Save'|trans }}" />
+    </div>
+</div>
+{{ form_end(form) }}
+<br/>
+<div class="row">
+    <div class="large-6 columns">
+        <h3>OAuth Client</h3>
+        <a class="button" href="/oauth/client">Create Client</a>
+    </div>
+</div>
+<br/>
+{% endblock fos_user_content %}

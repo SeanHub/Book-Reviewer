@@ -1,0 +1,57 @@
+{% extends '::header_footer.html.twig'%}
+{% set pageTitle = book.title %}
+{% set averageRatingRounded = averageRating|round(0, 'floor') %}
+{% block content %}
+<div class="row">
+    <div class="large-6 columns">
+        <h3>{{ book.title }}</h3>
+        <fieldset class="rating">
+            <input type="radio" id="star5_{{book.id}}" name="rating_{{book.id}}" value="5" disabled {% if averageRatingRounded == 5 %} checked {% endif %}/><label for="star5_{{book.id}}" title="{{ averageRating }}">5 Stars</label>
+            <input type="radio" id="star4_{{book.id}}" name="rating_{{book.id}}" value="4" disabled {% if averageRatingRounded == 4 %} checked {% endif %}/><label for="star4_{{book.id}}" title="{{ averageRating }}">4 Stars</label>
+            <input type="radio" id="star3_{{book.id}}" name="rating_{{book.id}}" value="3" disabled {% if averageRatingRounded == 3 %} checked {% endif %}/><label for="star3_{{book.id}}" title="{{ averageRating }}">3 Stars</label>
+            <input type="radio" id="star2_{{book.id}}" name="rating_{{book.id}}" value="2" disabled {% if averageRatingRounded == 2 %} checked {% endif %}/><label for="star2_{{book.id}}" title="{{ averageRating }}">2 Stars</label>
+            <input type="radio" id="star1_{{book.id}}" name="rating_{{book.id}}" value="1" disabled {% if averageRatingRounded == 1 %} checked {% endif %}/><label for="star1_{{book.id}}" title="{{ averageRating }}">1 Star</label>
+        </fieldset>
+        <h6>Written by <a href="#">{{ book.author }}</a></h6>
+        {% if book.isbn is not null %}
+            {% if book.isbn[1].type == 'ISBN_13' %}
+            <h6>ISBN: {{ book.isbn[1].identifier }}</h6>
+            {% endif %}
+        {% endif %}
+        <h6 class="subheader">Added on {{ book.dateAdded|date('l jS F Y') }}</h6>
+    </div>
+    <div class="large-6 columns left">
+        <img id="book_image" src=""/>
+        <h6 id="book_publisher"></h6>
+        <h6 class="subheader" id="book_publisheddate"></h6>
+    </div>
+</div>
+<div class="row">
+    <div class="large-6 columns sm-article-content">
+        <p>{{ book.synopsis|striptags('<br>')}}</p>
+    </div>
+</div>
+{% if book.isbn is not null %}
+    {% if book.isbn[1].type == 'ISBN_13' %}
+    <div class="row">
+        <div class="large-6 columns">
+            <a class="button" href="/book/add?isbn={{ book.isbn[1].identifier }}">Add Book</a>
+        </div>
+    </div>
+    {% endif %}
+{% endif %}
+<script>
+    window.onload = function () {
+        jQuery.ajax('https://www.googleapis.com/books/v1/volumes/' + '{{ book.id }}').done(function (data) {
+            if (data.totalItems !== 0) {
+                var book = data.volumeInfo;
+                if (book.imageLinks) {
+                    document.getElementById('book_image').setAttribute('src', book.imageLinks.thumbnail);
+                };
+                document.getElementById('book_publisher').innerText = 'Publisher: ' + book.publisher;
+                document.getElementById('book_publisheddate').innerText = 'Published: ' + book.publishedDate;
+            };
+        });
+    };
+</script>
+{% endblock %}

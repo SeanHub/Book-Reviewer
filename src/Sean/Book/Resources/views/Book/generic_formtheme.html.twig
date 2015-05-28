@@ -1,0 +1,31 @@
+{% block form_label %}
+    <div class="small-3 columns">
+        <span class="prefix">{{ label|trans }}</span>
+    </div>
+{% endblock form_label %}
+
+{% block form_errors %}
+    {% if errors|length > 0 %}
+		<div class="row">
+            <div class="large-6 columns">
+				{% for error in errors %}
+                    <small class="error">{% if error_message is defined %} {{ error_message|trans }} {% else %} {{ error.message }} {% endif %}</small>
+				{% endfor %}
+			</div>
+        </div>
+    {% endif %}
+{% endblock form_errors %}
+
+{% block form_row %}
+    {{ form_errors(form) }}
+    <div class="row">
+        <div class="large-6 columns">
+            <div class="row collapse">
+                {{ form_label(form) }}
+                <div class="small-9 columns">
+                    {{ form_widget(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock form_row %}

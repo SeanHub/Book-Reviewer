@@ -1,0 +1,37 @@
+{% extends '::header_footer.html.twig'%}
+{% set pageTitle = 'Home' %}
+{% block content %}
+<div class="row">
+    <div class="large-6 columns">
+        <h2>OAuth Client</h2>
+        <h6>Public ID</h6>
+        <h6 class="subheader" id="client_id">{{ oauth.publicId }}</h6>
+        <h6>Client Secret</h6>
+        <h6 class="subheader" id="client_secret">{{ oauth.secret }}</h6>
+        <h6>Redirect URI</h6>
+        <h6 class="subheader">{{ oauth.redirectUris[0] }}</h6>
+        <br/>
+        <a class="button" id="get_token">Get Access Token</a>
+        <label>Username</label><input id="username" type="text">
+        <label>Password</label><input id="password" type="password">
+        <label>Access Token</label><input id="access_token" type="text" readonly>
+    </div>
+</div>
+<script>
+    document.getElementById('get_token').addEventListener('click', function () {
+        var client_id = $('#client_id').text(),
+            client_secret = $('#client_secret').text(),
+            username = $('#username').val(),
+            password = $('#password').val(),
+            _self = this;
+        
+        _self.setAttribute('disabled', 'disabled');
+        
+        //should be sent over https, would not send over http
+        jQuery.ajax('http://localhost:8000/oauth/v2/token?grant_type=password&username=' + username + '&password=' + password + '&client_id=' + client_id + '&client_secret=' + client_secret).done(function (data) {
+            $('#access_token').val(data.access_token);
+            _self.removeAttribute('disabled');
+        });
+    });
+</script>
+{% endblock %}

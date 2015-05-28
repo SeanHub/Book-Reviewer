@@ -1,0 +1,34 @@
+{% extends '::base.html.twig'%} {% block body %}
+    <div class="icon-bar vertical five-up sm-nav">
+        <a class="item" href="/">
+            <i class="fi-home"></i>
+            <label>Home</label>
+        </a>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <a class="item" href="/book/add">
+                <i class="fi-book-bookmark"></i>
+                <label>Add Book</label>
+            </a>
+            <a class="item" href="/user/edit">
+                <i class="fi-torso"></i>
+                <label>{{ app.user.username }}</label>
+            </a>
+            <a class="item" href="/logout">
+                <i class="fi-power"></i>
+                <label>Log Out</label>
+            </a>
+        {% else %}
+            <a class="item" href="/login">
+                <i class="fi-key"></i>
+                <label>Log In</label>
+            </a>
+            <a class="item" href="/register">
+                <i class="fi-plus"></i>
+                <label>Register</label>
+            </a>
+        {% endif %}
+    </div>
+    <div class="sm-main">
+        {% block content %}{% endblock %}
+    </div>
+{% endblock %}

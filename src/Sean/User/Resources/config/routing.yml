@@ -1,0 +1,3 @@
+user_edit:
+    path:   /edit
+    defaults:   { _controller: FOSUserBundle:Profile:edit }

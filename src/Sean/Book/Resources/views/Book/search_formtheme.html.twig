@@ -1,0 +1,16 @@
+{% block form_label %}
+    <div class="small-3 columns">
+        <span class="prefix">{{ label|trans }}</span>
+    </div>
+{% endblock form_label %}
+
+{% block form_row %}
+    <div class="row collapse">
+        <div class="small-10 columns">
+            {{ form_widget(form) }}
+        </div>
+        <div class="small-2 columns">
+            <button class="button postfix" type="submit" id="book_search" name="book[search]">&nbsp;<i class="fi-magnifying-glass"></i>&nbsp;</button>
+        </div>
+    </div>
+{%- endblock form_row %}

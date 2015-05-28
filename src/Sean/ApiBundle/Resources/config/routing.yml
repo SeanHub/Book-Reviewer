@@ -1,0 +1,14 @@
+api_book:
+    resource: Sean\ApiBundle\Controller\BookController
+    name_prefix: api_
+    prefix: /
+    type: rest
+    
+api_book_comments:
+    resource: Sean\ApiBundle\Controller\ReviewController
+    parent: api_book
+    type: rest
+    
+api_user:
+    resource: Sean\ApiBundle\Controller\UserController
+    type: rest

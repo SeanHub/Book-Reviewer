@@ -1,0 +1,26 @@
+api:
+    resource: "@ApiBundle/Resources/config/routing.yml"
+    prefix: /api/v1
+    type: rest
+    
+#external_api:
+    #resource: "@ExternalApiBundle/Resources/config/routing.yml"
+    #prefix:   /api/external/v1
+    #type: rest
+
+book_bundle:
+    resource: "@BookBundle/Resources/config/routing.yml"
+    prefix: /
+    
+user_bundle:
+    resource: "@UserBundle/Resources/config/routing.yml"
+    prefix: /user
+    
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+    
+fos_oauth_server_token:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+
+fos_oauth_server_authorize:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"

@@ -1,0 +1,12 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% block fos_user_content %}
+<div class="row">
+    <div class="large-6 columns">
+        <h4>Your Profile</h4>
+        <br/>
+        <p><b>{{ 'Username'|trans }}:</b> {{ user.username }}</p>
+        <p><b>{{ 'Email'|trans }}:</b> {{ user.email }}</p>
+    </div>
+</div>
+{% endblock fos_user_content %}

@@ -1,0 +1,53 @@
+{% extends '::header_footer.html.twig'%}
+{% set pageTitle = 'Add Book' %}
+{% form_theme form 'BookBundle:Book:generic_formtheme.html.twig' %}
+{% block content %}
+<div class="row">
+    <div class="large-6 columns">
+        <h3>Add Book</h3>
+    </div>
+</div>
+<br/>
+{{ form_start(form) }}
+{{ form_widget(form._token) }}
+{{ form_row(form.isbn, { 'label': 'ISBN' }) }}
+{{ form_row(form.title, { 'label': 'Title' }) }}
+{{ form_row(form.synopsis, { 'label': 'Synopsis' }) }}
+{{ form_row(form.author, { 'label': 'Author' }) }}
+{{ form_row(form.genre, { 'label': 'Genre' }) }}
+<div class="row">
+    <div class="large-6 columns">
+        <button class="button success right" id="book_autofill" type="button">Autofill</button>
+        {{ form_row(form.save, { 'label': 'Save' }) }}
+    </div>
+</div>
+{{ form_end(form) }}
+<script>
+    document.getElementById('book_autofill').addEventListener('click', function () {
+        var $book_autofill = this,
+            book_isbn = document.getElementById('book_isbn').value;
+        
+        if (book_isbn.length !== 13 || isNaN(book_isbn)) {
+            alert('ISBN is required, please enter a 13 digit number.');
+            return false;
+        };
+        
+        $($book_autofill).attr('disabled','disabled');
+        
+        jQuery.ajax('https://www.googleapis.com/books/v1/volumes?q=isbn:' + book_isbn).done(function (data) {
+            $($book_autofill).removeAttr('disabled');
+            
+            if (data.totalItems === 0) {
+                alert('No book found, please enter the details manually.');
+                return false;
+            };
+            
+            var book = data.items[0].volumeInfo;
+            $('#book_title').val(book.title);
+            $('#book_synopsis').val(book.description.substring(0, 797) + '...');
+            $('#book_author').val(book.authors[0]);
+            $('#book_genre').val(book.categories[0]);
+        });
+    });
+</script>
+{% endblock %}
